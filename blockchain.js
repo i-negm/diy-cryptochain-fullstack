@@ -36,12 +36,12 @@ class Blockchain {
 
     for (let i = 1; i < chain.length; i++) {
       const block = chain[i];
-      const { timestamp, data, lastHash, hash } = block;
+      const { timestamp, data, lastHash, hash, difficulty, nonce } = block;
       // Check if every block has the hash of the previous one
       if (block.lastHash !== chain[i - 1].hash)
         return false;
       // Check if the blokc itself did not be tampered
-      const calculatedHash = cryptoHash(data, lastHash, timestamp);
+      const calculatedHash = cryptoHash(data, lastHash, timestamp, difficulty, nonce);
       if (calculatedHash !== block.hash)
         return false;
     }
