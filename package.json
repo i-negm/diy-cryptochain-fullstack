@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node src/express/index.js",
+    "dev": "nodemon src/express/index.js",
     "test": "jest --watchAll --colors ",
     "average-work": "node tests/average-work.js | tee tests/logs/average-work.log"
   },
@@ -11,9 +13,12 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "jest": "^26.6.3"
+    "jest": "^26.6.3",
+    "nodemon": "^1.18.4"
   },
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
     "hex-to-binary": "^1.0.1"
   }
 }
