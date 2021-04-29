@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watchAll --colors "
+    "test": "jest --watchAll --colors ",
+    "average-work": "node tests/average-work.js | tee tests/logs/average-work.log"
   },
   "keywords": [],
   "author": "",
