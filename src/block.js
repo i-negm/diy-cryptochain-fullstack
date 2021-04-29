@@ -1,5 +1,5 @@
-const { MINE_RATE, GENESIS_DATA } = require("./config");
-const cryptoHash = require("./crypto-hash");
+const { MINE_RATE, GENESIS_DATA } = require("../config/config");
+const cryptoHash = require("../src/crypto-hash");
 
 class Block {
     constructor ({ timestamp, lastHash, hash, data, nonce, difficulty }) {

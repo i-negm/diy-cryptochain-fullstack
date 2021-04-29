@@ -1,6 +1,6 @@
-const Block = require('./block');
-const { MINE_RATE, GENESIS_DATA } = require('./config');
-const cryptoHash = require('./crypto-hash');
+const Block = require('../src/block');
+const { MINE_RATE, GENESIS_DATA } = require('../config/config');
+const cryptoHash = require('../src/crypto-hash');
 
 describe('Block', () => {
   const timestamp = 2000;
