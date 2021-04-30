@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/express/index.js",
-    "dev": "nodemon src/express/index.js",
+    "dev": "npm run start-redis && nodemon src/express/index.js",
     "test": "jest --watchAll --colors ",
-    "average-work": "node tests/average-work.js | tee tests/logs/average-work.log"
+    "average-work": "node tests/average-work.js | tee tests/logs/average-work.log",
+    "start-redis": "wsl redis-server --daemonize yes"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +20,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
-    "hex-to-binary": "^1.0.1"
+    "hex-to-binary": "^1.0.1",
+    "redis": "^3.1.2"
   }
 }
