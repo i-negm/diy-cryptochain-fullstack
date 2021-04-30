@@ -1,9 +1,12 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const Blockchain = require('../blockchain');
+const PubSub = require('../pubsub/pubsub');
 
 const app = express();
 const blockchain = new Blockchain();
+const pubsub = new PubSub({ blockchain });
+
 
 /**
  * Express Middle Ware Initialization
@@ -17,6 +20,7 @@ app.get('/api/blocks', (req, res) => {
 app.post('/api/mine', (req, res) => {
   const { data } = req.body;
   blockchain.addBlock({ data });
+  pubsub.broadcastChain();  
   // Redirect the user after sending the data
   res.redirect('/api/blocks');
 });
