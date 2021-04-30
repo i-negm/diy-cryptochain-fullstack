@@ -4,12 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/express/index.js",
-    "dev": "npm run start-redis && nodemon src/express/index.js",
-    "dev-peer": "cross-env GENERATE_PEER_PORT='true' nodemon src/express/index.js",
+    "start": "node index.js",
+    "dev": "npm run start-redis && nodemon index.js",
+    "dev-peer": "cross-env GENERATE_PEER_PORT='true' nodemon index.js",
     "test": "jest --watchAll --colors ",
     "test-ci": "jest --colors ",
-    "average-work": "node tests/average-work.js | tee tests/logs/average-work.log",
+    "average-work": "node scripts/average-work.js | tee logs/average-work.log",
     "start-redis": "wsl redis-server --daemonize yes"
   },
   "keywords": [],
