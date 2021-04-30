@@ -44,5 +44,13 @@ if (process.env.GENERATE_PEER_PORT === 'true') {
 const PORT = PEER_PORT || DEFAULT_PORT;
 app.listen(PORT, () => {
   console.log(`Listening at localhost:${PORT}`);
-  synchChains(); 
+
+  // If it's the root node, then avoid synching
+  if (PORT === DEFAULT_PORT)
+  {
+    console.log(`[DEBUG] This is the root node, no need to sync the blockchain`);
+  } else {
+    synchChains();
+  }
+
 });
