@@ -8,6 +8,7 @@
     "dev": "npm run start-redis && nodemon src/express/index.js",
     "dev-peer": "cross-env GENERATE_PEER_PORT='true' nodemon src/express/index.js",
     "test": "jest --watchAll --colors ",
+    "test-ci": "jest --colors ",
     "average-work": "node tests/average-work.js | tee tests/logs/average-work.log",
     "start-redis": "wsl redis-server --daemonize yes"
   },
