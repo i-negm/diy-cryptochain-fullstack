@@ -111,4 +111,52 @@ describe('Transaction', () => {
       });
     });
   });
+
+  describe('update()', () => {
+    let originalSignature, origianlSenderOutputAmount, nextRecipient, nextAmount;
+
+    beforeEach(() => {
+      originalSignature = transaction.input.signature;
+      origianlSenderOutputAmount = transaction.outputMap[senderWallet.publicKey];
+      nextRecipient = 'next-recipient';
+      nextAmount = 50;
+
+      transaction.update({
+        senderWallet, recipient: nextRecipient, amount: nextAmount
+      });
+    });
+
+    it('outputs the amount to the next recipient', () => {
+      expect(transaction.outputMap[nextRecipient]).toEqual(nextAmount);
+    });
+
+    it('subtracts the amount from the original sender output amount', () => {
+      expect(transaction.outputMap[senderWallet.publicKey])
+        .toEqual(origianlSenderOutputAmount - nextAmount);
+    });
+
+    it('maintains a total output value that still matches the input amount', () => {
+      expect(
+        Object.values(transaction.outputMap)
+          .reduce((total, outputAmount) => total + outputAmount)
+      ).toEqual(transaction.input.amount);
+    });
+
+    it('resigns the transaction', () => {
+      expect(transaction.input.signature).not.toEqual(originalSignature);
+    });
+
+    describe('when the amount is invalid', () => {
+      const hugeAmount = 9999999;
+      
+      it('it thorws an error', () => {
+        expect(() => {
+          transaction.update({
+            senderWallet, recipient: nextRecipient, amount: hugeAmount
+          });
+        }).toThrow('Amount exceeds balance.');
+      });
+    });
+
+  });
 });

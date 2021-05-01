@@ -31,6 +31,19 @@ class Transaction {
     };
   }
 
+  update({ senderWallet, recipient, amount }) {
+    const { publicKey } = senderWallet;
+    const senderBalance = this.outputMap[publicKey];
+
+    if (amount > senderBalance) {
+      throw new Error('Amount exceeds balance.');
+    }
+    // Assign the amount to the recipient and subtract it from the sender remaining balance
+    this.outputMap[recipient] = amount
+    this.outputMap[publicKey] -= amount;
+    this.input =  this.createInputMap({ senderWallet, outputMap: this.outputMap });
+  }
+
   static validate(transaction) {
     const { input : { address, amount, signature } , outputMap } = transaction;
 
