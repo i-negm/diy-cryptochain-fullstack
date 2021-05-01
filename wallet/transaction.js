@@ -3,6 +3,11 @@ const { verifySignature } = require('../util');
 
 class Transaction {
   constructor({ senderWallet, recipient, amount }) {
+
+    if (amount > senderWallet.balance) {
+      throw new Error('Amount exceeds balance.');
+    }
+
     this.id = uuidv4();
     this.outputMap = this.createOutputMap({ senderWallet, recipient, amount });
     this.input = this.createInputMap({ senderWallet, outputMap: this.outputMap });
