@@ -1,13 +1,18 @@
 const { STARTING_BALANCE } = require('../config');
 const { ec } = require('../util');
-
+const cryptoHash = require('../util/crypto-hash');
 class Wallet {
   constructor() {
     this.balance = STARTING_BALANCE;
 
-    const keyPair = ec.genKeyPair();
+    this.keyPair = ec.genKeyPair();
     // .encode('hex') is used to convert the EC key from (x,y) fomat to "hex" format
-    this.publicKey = keyPair.getPublic().encode('hex');
+    this.publicKey = this.keyPair.getPublic().encode('hex');
+  }
+
+  sign(data) {
+    // Sign a hashed value of the data
+    return this.keyPair.sign(cryptoHash(data));
   }
 }
 
