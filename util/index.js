@@ -19,4 +19,4 @@ const verifySignature = ({ publicKey, data, signature }) => {
   );
 };
 
-module.exports = { ec, verifySignature };
+module.exports = { ec, verifySignature, cryptoHash };
