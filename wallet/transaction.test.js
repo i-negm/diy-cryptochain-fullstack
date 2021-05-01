@@ -70,7 +70,7 @@ describe('Transaction', () => {
         expect(Transaction.validate(transaction)).toBe(true);
       });
     });
-    
+
     describe('when a transaction is invalid', () => {
       describe('and the transaction `outputMap` is invalid', () => {
         it('returns `false`', () => {
@@ -80,7 +80,7 @@ describe('Transaction', () => {
           expect(errMock).toHaveBeenCalled();
         });
       });
-      
+
       describe('and the transaction `inputMap` is invalid', () => {
         it('returns `false`', () => {
           // tamper with input balance
@@ -89,7 +89,7 @@ describe('Transaction', () => {
           expect(errMock).toHaveBeenCalled();
         });
       });
-      
+
       describe('and the transaction `input` signature is invalid', () => {
         it('returns `false`', () => {
           // tamper with input signature
@@ -146,9 +146,29 @@ describe('Transaction', () => {
       expect(transaction.input.signature).not.toEqual(originalSignature);
     });
 
+    describe('when sending to same recipient', () => {
+      const extraAmountSameRecipient = 70;
+      beforeEach(() => {
+        // Same recipient
+        transaction.update({
+          senderWallet, recipient: nextRecipient, amount: extraAmountSameRecipient
+        });
+      });
+
+      it('adds to the amount', () => {
+        expect(transaction.outputMap[nextRecipient])
+          .toEqual(nextAmount + extraAmountSameRecipient);
+      });
+
+      it('subtracts the amount from the original sender output amount', () => {
+        expect(transaction.outputMap[senderWallet.publicKey])
+          .toEqual(origianlSenderOutputAmount - nextAmount - extraAmountSameRecipient);
+      });
+
+    });
     describe('when the amount is invalid', () => {
       const hugeAmount = 9999999;
-      
+
       it('it thorws an error', () => {
         expect(() => {
           transaction.update({

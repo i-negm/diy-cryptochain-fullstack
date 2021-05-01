@@ -38,8 +38,14 @@ class Transaction {
     if (amount > senderBalance) {
       throw new Error('Amount exceeds balance.');
     }
+
+    if (this.outputMap[recipient] === undefined) {
+      // Initialize recipient amount = 0 (if first time)
+      this.outputMap[recipient] = 0;
+    }
+
     // Assign the amount to the recipient and subtract it from the sender remaining balance
-    this.outputMap[recipient] = amount
+    this.outputMap[recipient] += amount
     this.outputMap[publicKey] -= amount;
     this.input =  this.createInputMap({ senderWallet, outputMap: this.outputMap });
   }
