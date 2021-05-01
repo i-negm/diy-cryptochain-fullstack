@@ -60,4 +60,55 @@ describe('Transaction', () => {
       ).toBe(true);
     });
   });
+
+  describe('validate()', () => {
+    const errMock = jest.fn();
+    global.console.error = errMock;
+
+    describe('when a transaction is valid', () => {
+      it('returns `true`', () => {
+        expect(Transaction.validate(transaction)).toBe(true);
+      });
+    });
+    
+    describe('when a transaction is invalid', () => {
+      describe('and the transaction `outputMap` is invalid', () => {
+        it('returns `false`', () => {
+          // tamper with outputmap amount
+          transaction.outputMap[recipient] = 500;
+          expect(Transaction.validate(transaction)).toBe(false);
+          expect(errMock).toHaveBeenCalled();
+        });
+      });
+      
+      describe('and the transaction `inputMap` is invalid', () => {
+        it('returns `false`', () => {
+          // tamper with input balance
+          transaction.input.amount = 10000;
+          expect(Transaction.validate(transaction)).toBe(false);
+          expect(errMock).toHaveBeenCalled();
+        });
+      });
+      
+      describe('and the transaction `input` signature is invalid', () => {
+        it('returns `false`', () => {
+          // tamper with input signature
+          transaction.input.signature = senderWallet.sign('foo-data');
+          expect(Transaction.validate(transaction)).toBe(false);
+          expect(errMock).toHaveBeenCalled();
+        });
+      });
+
+      describe('and the `recipient` has been tampered', () => {
+        it('returns `false`', () => {
+          // tamper with input signature
+          delete transaction.outputMap[recipient];
+          transaction.outputMap['new-foo-recipient'] = 50;
+
+          expect(Transaction.validate(transaction)).toBe(false);
+          expect(errMock).toHaveBeenCalled();
+        });
+      });
+    });
+  });
 });

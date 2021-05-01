@@ -26,6 +26,25 @@ class Transaction {
     };
   }
 
+  static validate(transaction) {
+    const { input : { address, amount, signature } , outputMap } = transaction;
+
+    // Check if amount in == amout out
+    const outputTotal = Object.values(outputMap)
+      .reduce((total, outputAmount) => total + outputAmount);
+    if(amount !== outputTotal) {
+      console.error(`[ERROR] Invalid transaction from ${address}, amounts not add up.`);
+      return false;
+    }
+    
+    // Check the signature
+    if( verifySignature({ publicKey: address, data: outputMap, signature }) === false ) {
+      console.error(`[ERROR] Invalid transaction from ${address}, wrong signature.`);
+      return false;
+    }
+
+    return true;
+  }
 }
 
 module.exports = Transaction;
