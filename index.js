@@ -49,6 +49,10 @@ app.post('/api/transact', (req, res) => {
   res.json({ type: "success", transaction });
 });
 
+app.get('/api/transaction-pool-map', (req, res) => {
+  res.json(transactionPool.transactionMap);
+});
+
 const synchChains = () => {
   request({ url: `${ROOT_NODE_ADDRESS}/api/blocks` }, (error, response, body) => {
     if (!error && response.statusCode === 200) {
