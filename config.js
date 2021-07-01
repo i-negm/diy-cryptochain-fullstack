@@ -17,4 +17,14 @@ const GENESIS_DATA = {
 /** Wallet */
 const STARTING_BALANCE = 1000;
 
-module.exports = { GENESIS_DATA, MINE_RATE, STARTING_BALANCE };
+/** Reward */
+const REWARD_INPUT = { address: '*authorized-rewards*' };
+const MINING_REWARD = 50;
+
+module.exports = { 
+  GENESIS_DATA,
+  MINE_RATE,
+  STARTING_BALANCE,
+  REWARD_INPUT,
+  MINING_REWARD
+};
