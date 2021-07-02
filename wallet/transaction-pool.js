@@ -28,6 +28,22 @@ class TransactionPool {
     );
   }
 
+  clearBlockchainTransactions({ chain }) {
+    /* Iterate over all the blockchain transactions (already in blocks) */
+    for (let i = 0; i < chain.length; i++) {
+      const block = chain[i];
+      for (let transaction of block.data) {
+        /**
+         * For each block's transactions data, check if the transaction is in the 
+         * current local memory pool
+         */
+        if (this.transactionMap[transaction.id]) {
+          delete this.transactionMap[transaction.id];
+        }
+      }
+    }
+  }
+
 }
 
 module.exports = TransactionPool;

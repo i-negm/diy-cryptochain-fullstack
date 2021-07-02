@@ -1,6 +1,7 @@
 const TransactionPool = require('./transaction-pool');
 const Transaction = require('./transaction');
 const Wallet = require('.');
+const Blockchain = require('../blockchain');
 
 describe('TransactionPool', () => {
   let transactionPool, transaction, senderWallet;
@@ -75,6 +76,46 @@ describe('TransactionPool', () => {
     it('clears the transaction pool', () => {
       transactionPool.clear();
       expect(transactionPool.transactionMap).toEqual({});
+    });
+  });
+
+  describe('clearBlockchainTransactions()', () => {
+    it('clears the pool of any existing any blockchain transactions', () => {
+      /**
+       * This test shall verify that `clearBlockchainTransactions()` function is
+       * clearing all the already pushed transaction to the blockchain.
+       */
+      /* ARRANGE  */
+      const blockchain = new Blockchain();
+      const expectedTransactionMap = {};
+
+      for(let i=0; i<6; i++) {
+        const transaction = new Wallet().createTransaction({
+          recipient:'foo',
+          amount : 20
+        });
+
+        /**
+         * Add all the generated transactions to the local pool
+         */
+        transactionPool.setTransaction(transaction);
+
+        /**
+         * Fill the blockchain with even for loop iteration transactions,
+         * and let the remaining (odd transactions) to be expected to remain in the local pool
+         */
+        if(i%2 == 0) {
+          blockchain.addBlock({ data: transaction });
+        } else {
+          expectedTransactionMap[transaction.id] = transaction;
+        }
+      }
+
+      /* ACT */
+      transactionPool.clearBlockchainTransactions({ chain: blockchain.chain });
+
+      /* ASSERT */
+      expect(transactionPool.transactionMap).toEqual(expectedTransactionMap);
     });
   });
 });
