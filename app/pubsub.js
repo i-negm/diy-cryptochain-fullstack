@@ -39,7 +39,15 @@ class PubSub {
 
     switch (channel) {
       case CHANNELS.BLOCKCHAIN:
-        this.blockchain.replaceChain(parsedMessage);
+        this.blockchain.replaceChain(parsedMessage, () => {
+          /** 
+           * Synching the local transaction pool with the blockchain
+           * transaction pool by removing the transactions that has 
+           * been pushed to the new received blockchain.
+           */
+          console.log("Synching the transaction pool.");
+          this.transactionPool.clearBlockchainTransactions({ chain: parsedMessage });
+        });
         break;
       case CHANNELS.TRANSACTION:
         this.transactionPool.replaceTransactionPool(parsedMessage);
