@@ -70,6 +70,28 @@ describe('Wallet', () => {
           .toThrow('Amount exceeds balance.');
       });
     });
+
+    describe('and a chain is passed', () => {
+      it('calls `Wallet.calculateBalance()`', () => {
+        /* Arrange */
+        const calculateBalanceMock = jest.fn();
+        const originalCalculateBalance = Wallet.calculateBalance;
+        Wallet.calculateBalance = calculateBalanceMock;
+
+        /* Act */
+        wallet.createTransaction({
+          recipient: 'foo',
+          amount: 10,
+          chain: new Blockchain().chain
+        });
+
+        /* Assert */
+        expect(calculateBalanceMock).toHaveBeenCalled();
+
+        /* Return back the original function instead of mock to avoid failing tests */
+        Wallet.calculateBalance = originalCalculateBalance;
+      });
+    });
   });
 
   describe('calculateBalance()', () => {
