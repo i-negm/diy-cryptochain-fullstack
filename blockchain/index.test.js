@@ -24,7 +24,7 @@ describe('Blockchain', () => {
 
     // Assert
     expect(blockchain.chain[blockchain.chain.length - 1].data)
-      .toEqual([newData]);
+      .toEqual(newData);
   });
 
 

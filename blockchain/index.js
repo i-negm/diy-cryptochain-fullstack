@@ -10,7 +10,7 @@ class Blockchain {
     this.chain.push(Block.mineBlock(
       {
         lastBlock: this.chain[this.chain.length - 1],
-        data : [data]
+        data : data
       }
     ));
   }

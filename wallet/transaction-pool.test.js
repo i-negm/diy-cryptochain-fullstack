@@ -105,7 +105,7 @@ describe('TransactionPool', () => {
          * and let the remaining (odd transactions) to be expected to remain in the local pool
          */
         if(i%2 == 0) {
-          blockchain.addBlock({ data: transaction });
+          blockchain.addBlock({ data: [transaction] });
         } else {
           expectedTransactionMap[transaction.id] = transaction;
         }
