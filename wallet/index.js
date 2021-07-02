@@ -23,6 +23,20 @@ class Wallet {
       senderWallet: this
     });
   }
+
+  static calculateBalance({chain, address}) {
+    let currentBalance = STARTING_BALANCE;
+
+    for(let i=0; i<chain.length; i++) {
+      const block = chain[i];
+      for(let transaction of block.data) {
+        if(transaction.outputMap[address]) {
+          currentBalance += transaction.outputMap[address];
+        }
+      }
+    }
+    return currentBalance;
+  }
 }
 
 module.exports = Wallet;
