@@ -16,10 +16,7 @@ class App extends Component {
   render() {
     const {address, balance} = this.state.walletInfo;
     return (
-      <div className="container">
-        <Navbar />
-        <br />
-        <div className="row">
+      <div className="row">
           <div className="col-3">
 
             <div className="card">
@@ -30,11 +27,11 @@ class App extends Component {
               </div>
             </div>
           </div>
+
           <div className="col-9">
             <Blocks />
           </div>
         </div>
-      </div>
     );
   }
 }

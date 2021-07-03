@@ -1,13 +1,24 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Router, Switch, Route} from 'react-router-dom';
+
 import './index.css';
+import history from './components/history';
+import Navbar from './components/Navbar';
 import App from './App';
+import Blocks from './components/Blocks';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <div className="container">
+    <Navbar />
+    <Router history={history}>
+      <Switch>
+        <Route path="/" exact component={App} />
+        <Route path="/blocks" component={Blocks} />
+      </Switch>
+    </Router>
+  </div>,
   document.getElementById('root')
 );
 
