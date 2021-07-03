@@ -1,5 +1,8 @@
 const Block = require('./block');
 const { cryptoHash } = require("../util");
+const { REWARD_INPUT, MINING_REWARD } = require('../config');
+const Transaction = require('../wallet/transaction');
+const Wallet = require('../wallet');
 
 class Blockchain {
   constructor() {
@@ -34,6 +37,52 @@ class Blockchain {
     
     console.log(`Replacing chain with:`, newChain);
     this.chain = newChain;
+  }
+
+  validTransactionData({ chain }) {
+    for(let i=1; i<chain.length; i++) {
+      const block = chain[i];
+
+      let rewardTransactionCount = 0;
+      for(let transaction of block.data) {
+
+        if(transaction.input.address === REWARD_INPUT.address) {
+          /* For reward transaction */
+          
+          rewardTransactionCount += 1;
+          /* Check if there is only one reward transaction per block */
+          if (rewardTransactionCount > 1) {
+            console.error('Miner rewards exceed limit');
+            return false;
+          }
+          
+          /* Check if the amount of the reward transaction is == `MINING_REWARD` */
+          if(Object.values(transaction.outputMap)[0] != MINING_REWARD) {
+            console.error('Miner reward amount is invalid');
+            return false;
+          }
+        } else {
+          /* For normal transaction */
+
+          /* 1. Validate if the transaction (input == output), signature */
+          if(!Transaction.validate(transaction)) {
+            console.error('Invalid transaction');
+            return false;
+          }
+          /* 2. Make sure that the current wallet has the same as input balance */
+          const trueBalance = Wallet.calculateBalance({
+            chain: this.chain,
+            address: transaction.input.address
+          });
+          if (transaction.input.amount !== trueBalance) {
+            console.error('Invalid input amount');
+            return false;
+          }
+        }
+
+      }
+    }
+    return true;
   }
 
   static isValidChain(chain) {
