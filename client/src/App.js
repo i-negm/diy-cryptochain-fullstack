@@ -22,11 +22,11 @@ class App extends Component {
         <div className="row">
           <div className="col-3">
 
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">💳 My wallet </h5>
-                <p class="card-text">Address: {address? address.substring(0,11): address} </p>
-                <p class="card-text">Balance: {balance} </p>
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">💳 My wallet </h5>
+                <p className="card-text">Address: {address? address.substring(0,11): address} </p>
+                <p className="card-text">Balance: {balance} </p>
               </div>
             </div>
           </div>
