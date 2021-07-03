@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 const request = require('request');
 const bodyParser = require('body-parser');
 const Blockchain = require('./blockchain');
@@ -21,6 +22,7 @@ const ROOT_NODE_ADDRESS = `http://localhost:${DEFAULT_PORT}`;
  * Express Middle Ware Initialization
  */
 app.use(bodyParser.json());
+app.use(cors());
 
 app.get('/api/blocks', (req, res) => {
   res.json(blockchain.chain);
