@@ -7,6 +7,7 @@ import history from './components/history';
 import Navbar from './components/Navbar';
 import App from './App';
 import Blocks from './components/Blocks';
+import ConductTransaction from './components/ConductTransaction';
 import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
@@ -16,6 +17,7 @@ ReactDOM.render(
       <Switch>
         <Route path="/" exact component={App} />
         <Route path="/blocks" component={Blocks} />
+        <Route path="/conduct-transaction" component={ConductTransaction} />
       </Switch>
     </Router>
   </div>,
