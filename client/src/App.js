@@ -15,6 +15,9 @@ class App extends Component {
 
   render() {
     const {address, balance} = this.state.walletInfo;
+
+    console.log("address", address)
+
     return (
       <div className="row">
           <div className="col-3">

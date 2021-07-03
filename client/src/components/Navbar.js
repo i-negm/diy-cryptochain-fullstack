@@ -21,6 +21,7 @@ class NavigationBar extends Component {
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/blocks">Blocks</Nav.Link>
             <Nav.Link href="/conduct-transaction">Conduct Transaction</Nav.Link>
+            <Nav.Link href="/transaction-pool">Transaction Pool</Nav.Link>
           </Nav>
         </Navbar>
       </>

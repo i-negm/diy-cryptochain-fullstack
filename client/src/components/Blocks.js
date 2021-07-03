@@ -19,7 +19,7 @@ class Blocks extends Component {
         <div className="accordion" id="blockchain-blocks">
           <h3>Blocks</h3>
           {
-            this.state.blocks.reverse().map((block, index, blocks) => {
+            [...this.state.blocks].reverse().map((block, index, blocks) => {
               const blockHash = block.hash ? block.hash.substring(0, 15) : block.hash;
               const metaData = {blockIndex: index, chainLength: blocks.length};
               return (

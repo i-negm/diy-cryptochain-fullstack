@@ -9,6 +9,7 @@ import App from './App';
 import Blocks from './components/Blocks';
 import ConductTransaction from './components/ConductTransaction';
 import reportWebVitals from './reportWebVitals';
+import TransactionPool from './components/TransactionPool';
 
 ReactDOM.render(
   <div className="container">
@@ -18,6 +19,7 @@ ReactDOM.render(
         <Route path="/" exact component={App} />
         <Route path="/blocks" component={Blocks} />
         <Route path="/conduct-transaction" component={ConductTransaction} />
+        <Route path="/transaction-pool" component={TransactionPool} />
       </Switch>
     </Router>
   </div>,
