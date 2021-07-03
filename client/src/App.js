@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import React , {Component} from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+
+  state = { walletInfo: {} };
+
+  componentDidMount() {
+    fetch('http://localhost:3000/api/wallet-info')
+      .then( response => response.json())
+      .then( json => this.setState({ walletInfo: json }) );
+  }
+
+  render() {
+    const {address, balance} = this.state.walletInfo;
+    return (
+      <div>
+        <div>
+          Welcome to the crypto blockchain...
+        </div>
+        <div> Address {address} </div>
+        <div> Balance {balance} </div>
+      </div>
+    );
+  }
 }
 
 export default App;
