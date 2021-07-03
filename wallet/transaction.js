@@ -1,16 +1,19 @@
 const { v4: uuidv4 } = require('uuid');
+const { REWARD_INPUT, MINING_REWARD } = require('../config');
 const { verifySignature } = require('../util');
 
 class Transaction {
-  constructor({ senderWallet, recipient, amount }) {
+  constructor({ senderWallet, recipient, amount, outputMap, input }) {
 
-    if (amount > senderWallet.balance) {
+    if (input != REWARD_INPUT && amount > senderWallet.balance) {
+      /* Make sure that it's a normal transaction, as the reward transaction
+         does not have some props */
       throw new Error('Amount exceeds balance.');
     }
 
     this.id = uuidv4();
-    this.outputMap = this.createOutputMap({ senderWallet, recipient, amount });
-    this.input = this.createInputMap({ senderWallet, outputMap: this.outputMap });
+    this.outputMap = outputMap || this.createOutputMap({ senderWallet, recipient, amount });
+    this.input = input || this.createInputMap({ senderWallet, outputMap: this.outputMap });
   }
 
   /** Helper method  */
@@ -68,6 +71,13 @@ class Transaction {
     }
 
     return true;
+  }
+
+  static rewardTransaction({ minerWallet }) {
+    return new this({
+      input: REWARD_INPUT,
+      outputMap : { [minerWallet.publicKey] : MINING_REWARD }
+    });
   }
 }
 

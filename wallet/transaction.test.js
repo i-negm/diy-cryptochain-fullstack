@@ -1,6 +1,7 @@
 const Transaction = require('./transaction');
 const Wallet = require('.');
 const { verifySignature } = require('../util');
+const { REWARD_INPUT, MINING_REWARD } = require('../config');
 
 describe('Transaction', () => {
   let transaction, senderWallet, recipient, amount;
@@ -113,11 +114,11 @@ describe('Transaction', () => {
   });
 
   describe('update()', () => {
-    let originalSignature, origianlSenderOutputAmount, nextRecipient, nextAmount;
+    let originalSignature, originalSenderOutputAmount, nextRecipient, nextAmount;
 
     beforeEach(() => {
       originalSignature = transaction.input.signature;
-      origianlSenderOutputAmount = transaction.outputMap[senderWallet.publicKey];
+      originalSenderOutputAmount = transaction.outputMap[senderWallet.publicKey];
       nextRecipient = 'next-recipient';
       nextAmount = 50;
 
@@ -132,7 +133,7 @@ describe('Transaction', () => {
 
     it('subtracts the amount from the original sender output amount', () => {
       expect(transaction.outputMap[senderWallet.publicKey])
-        .toEqual(origianlSenderOutputAmount - nextAmount);
+        .toEqual(originalSenderOutputAmount - nextAmount);
     });
 
     it('maintains a total output value that still matches the input amount', () => {
@@ -162,14 +163,14 @@ describe('Transaction', () => {
 
       it('subtracts the amount from the original sender output amount', () => {
         expect(transaction.outputMap[senderWallet.publicKey])
-          .toEqual(origianlSenderOutputAmount - nextAmount - extraAmountSameRecipient);
+          .toEqual(originalSenderOutputAmount - nextAmount - extraAmountSameRecipient);
       });
 
     });
     describe('when the amount is invalid', () => {
       const hugeAmount = 9999999;
 
-      it('it thorws an error', () => {
+      it('it throws an error', () => {
         expect(() => {
           transaction.update({
             senderWallet, recipient: nextRecipient, amount: hugeAmount
@@ -178,5 +179,24 @@ describe('Transaction', () => {
       });
     });
 
+  });
+
+
+  describe('rewardTransaction()', () => {
+    let rewardTransaction, minerWallet;
+
+    beforeEach(() => {
+      minerWallet = new Wallet();
+      rewardTransaction = Transaction.rewardTransaction({ minerWallet });
+    });
+
+    it('creates a transaction with the reward input', () => {
+      expect(rewardTransaction.input).toEqual(REWARD_INPUT);
+    });
+
+    it('creates one transaction for the miner with the `MINING_REWARD`', () => {
+      expect(rewardTransaction.outputMap[minerWallet.publicKey]).toEqual(MINING_REWARD);
+    });
+    
   });
 });
