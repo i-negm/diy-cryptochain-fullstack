@@ -1,6 +1,7 @@
 import React , {Component} from 'react';
 
 import Blocks from './components/Blocks';
+import Navbar from './components/Navbar';
 
 class App extends Component {
 
@@ -16,10 +17,18 @@ class App extends Component {
     const {address, balance} = this.state.walletInfo;
     return (
       <div className="container">
+        <Navbar />
+        <br />
         <div className="row">
           <div className="col-3">
-            <div> Address {address? address.substring(0,11): address} </div>
-            <div> Balance {balance} </div>
+
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">💳 My wallet </h5>
+                <p class="card-text">Address: {address? address.substring(0,11): address} </p>
+                <p class="card-text">Balance: {balance} </p>
+              </div>
+            </div>
           </div>
           <div className="col-9">
             <Blocks />
