@@ -1,4 +1,4 @@
-# MY DIY Cryptochain
+# Cryptochain Full Stack Project
 
 ## Motivation
 This project was done as a way to emphasize my learning ability (learn by doing).
